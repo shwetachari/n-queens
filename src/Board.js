@@ -128,12 +128,43 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      //  first get n
+      var n = this.get('n');
+      //  recursive function to check if diagonal conflict exits
+      var hasConflict = false;
+      var checkDiagonal = function(column, row, count) {  
+        var space = this.get(row) === undefined ? undefined : this.get(row)[column];
+        //  base case, if board "ends" return boolean
+        if (space === undefined) {
+          return count > 1;
+        } else {
+          //  add value of diagonal square to count
+          count += space;
+          //  check square on down right diagonal over
+          return checkDiagonal(column + 1, row + 1, count);
+        }
+      }.bind(this);
+      //  iterate over rows
+      for (var i = 0; i < n; i++) {
+        //  check diagonal starting at mdciafr
+        hasConflict = hasConflict === true ? true : checkDiagonal(majorDiagonalColumnIndexAtFirstRow, i, 0);
+        
+      }
+      
+      return hasConflict;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      //  iterate over columns
+      //  pass to function above
+      
+      var hasConflict = false;
+      var n = this.get('n');
+      for (var i = 0; i < n; i++) {
+        hasConflict = hasConflict === true ? true : this.hasMajorDiagonalConflictAt(i);
+      }
+      return hasConflict;
     },
 
 
@@ -143,12 +174,41 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      //  first get n
+      var n = this.get('n');
+      //  recursive function to check if diagonal conflict exits
+      var hasConflict = false;
+      var checkDiagonal = function(column, row, count) {  
+        var space = this.get(row) === undefined ? undefined : this.get(row)[column];
+        //  base case, if board "ends" return boolean
+        if (space === undefined) {
+          return count > 1;
+        } else {
+          //  add value of diagonal square to count
+          count += space;
+          //  check square on down right diagonal over
+          return checkDiagonal(column - 1, row + 1, count);
+        }
+      }.bind(this);
+      //  iterate over rows
+      for (var i = 0; i < n; i++) {
+        //  check diagonal starting at mdciafr
+        hasConflict = hasConflict === true ? true : checkDiagonal(minorDiagonalColumnIndexAtFirstRow, i, 0);
+        
+      }
+      
+      return hasConflict;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      
+      var hasConflict = false;
+      var n = this.get('n');
+      for (var i = 0; i < n; i++) {
+        hasConflict = hasConflict === true ? true : this.hasMinorDiagonalConflictAt(i);
+      }
+      return hasConflict;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
