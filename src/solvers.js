@@ -73,17 +73,13 @@ window.findNQueensSolution = function(n) {
   var board = new Board({n: n});
   
   var noConflicts = function(board) {
-    // return board.hasAnyQueenConflictsOn(row, col);
     return board['hasAnyQueensConflicts']();
   };
 
   var placeQueens = function(row, col) {
-    //row = queens left
-
-    // if col param is undefined, means we ran through loop and didn't find a place for queens
     if (board.get(row) === undefined) {
       return;
-    } else if (board.get(row)[col] === undefined) {
+    } else if (board.get(row)[col] === undefined && board.get(row - 1) !== undefined) {
       row--;
       prevIndex = board.get(row).indexOf(1);
       board.get(row)[prevIndex] = 0;
@@ -97,23 +93,9 @@ window.findNQueensSolution = function(n) {
         placeQueens(row, col + 1);
       }
     }
-
-      // row - 1
-      // prevIndex = row-1.indexOf(1)
-      // (row-1)[prevIndex] = 0
-      // (row-1)[^prevIndex + 1] = 1
-      // placeQueens(row - 1, prevIndex + 1, queensLeft)
-    // else if no conflict at this row and column
-      // place queen
-      // this.displayBoard(solution);
-      // placeQueens(row + 1, 0)
-    // else if there is a conflict, keep incrementing column and rerunning function
-      // placeQueens(row, col + 1, queensLeft)
-
-
   };
   
-  if (n === 2) {
+  if (n === 2 || n === 3) {
     return solution;
   } else {
     placeQueens(0, 0);
