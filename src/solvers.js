@@ -170,6 +170,6 @@ window.countNQueensSolutions = function(n) {
     placeQueens(0, 0);
   }
 
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
+  // console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
