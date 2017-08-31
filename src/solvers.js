@@ -68,9 +68,63 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
+  
+  var solution = makeEmptyMatrix(n);
+  var board = new Board({n: n});
+  
+  var noConflicts = function(board) {
+    // return board.hasAnyQueenConflictsOn(row, col);
+    return board['hasAnyQueensConflicts']();
+  };
 
+  var placeQueens = function(row, col) {
+    //row = queens left
+
+    // if col param is undefined, means we ran through loop and didn't find a place for queens
+    if (board.get(row) === undefined) {
+      return;
+    } else if (board.get(row)[col] === undefined) {
+      row--;
+      prevIndex = board.get(row).indexOf(1);
+      board.get(row)[prevIndex] = 0;
+      placeQueens(row, prevIndex + 1);
+    } else {
+      board.get(row)[col] = 1;
+      if (!noConflicts(board)) {
+        placeQueens(row + 1, 0);
+      } else {
+        board.get(row)[col] = 0;
+        placeQueens(row, col + 1);
+      }
+    }
+
+      // row - 1
+      // prevIndex = row-1.indexOf(1)
+      // (row-1)[prevIndex] = 0
+      // (row-1)[^prevIndex + 1] = 1
+      // placeQueens(row - 1, prevIndex + 1, queensLeft)
+    // else if no conflict at this row and column
+      // place queen
+      // this.displayBoard(solution);
+      // placeQueens(row + 1, 0)
+    // else if there is a conflict, keep incrementing column and rerunning function
+      // placeQueens(row, col + 1, queensLeft)
+
+
+  };
+  
+  if (n === 2) {
+    return solution;
+  } else {
+    placeQueens(0, 0);
+    for (var i = 0; i < n; i++) {
+      solution[i] = board.get(i);
+    }
+  }
+  
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+  this.displayBoard(solution);
+
   return solution;
 };
 
