@@ -123,9 +123,10 @@ window.countNQueensSolutions = function(n) {
   
   
 
-  var noConflicts = function(board) {
-    return board['hasAnyQueensConflicts']();
+  var noConflicts = function(row, col) {
+    return board.hasRowConflictAt(row) || board.hasColConflictAt(col) || board.hasAnyMajorDiagonalConflicts() || board.hasAnyMinorDiagonalConflicts();
   };
+      
   
   var hitMidpoint = false;
   var placeQueens = function(row, col) {
@@ -153,7 +154,7 @@ window.countNQueensSolutions = function(n) {
       placeQueens(row, prevIndex + 1);
     } else {
       board.get(row)[col] = 1;
-      if (!noConflicts(board)) {
+      if (!noConflicts(row, col)) {
         placeQueens(row + 1, 0);
       } else {
         board.get(row)[col] = 0;
