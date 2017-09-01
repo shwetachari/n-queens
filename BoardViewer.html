@@ -20,6 +20,9 @@
       .inConflict{
           background-color: red;
       }
+      table {
+        margin:10px;
+      }
     </style>
   </head>
   <body>
@@ -31,27 +34,31 @@
     <script src="src/solvers.js"></script>
     <script>
       // This function uses a board visualizer lets you view an interactive version of any piece matrix.
-      window.displayBoard = function(matrix){
-        $('body').html(
+      window.displayBoard = function(matrix) {
+        $('body').append(
           new BoardView({
             model: new Board(matrix)
           }).render()
         );
       };
-      $(function(){
+      $(function() {
         // this is a pre-baked solution for n-queens in the n = 4 case, rendered to the screen using our handy visualizer.
-        displayBoard([
-          [0, 1, 0, 0],
-          [0, 0, 0, 1],
-          [1, 0, 0, 0],
-          [0, 0, 1, 0]
-        ]);
+        // displayBoard([
+        //   [0, 1, 0, 0],
+        //   [0, 0, 0, 1],
+        //   [1, 0, 0, 0],
+        //   [0, 0, 1, 0]
+        // ]);
 
-        var n = 4;
+        var n = 8;
         findNRooksSolution(n);
         countNRooksSolutions(n);
         findNQueensSolution(n);
         countNQueensSolutions(n);
+        
+        for (var i = 4; i <= 13; i++) {
+          displayBoard(findNQueensSolution(i));
+        }
       });
     </script>
   </body>

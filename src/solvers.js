@@ -109,7 +109,6 @@ window.findNQueensSolution = function(n) {
   }
   
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  window.displayBoard(solution);
 
   return solution;
 };
@@ -118,8 +117,58 @@ window.findNQueensSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
+  
+  
   var solutionCount = 0; 
-  var board = new Board({n: n});
+  
+  var values = [];
+  for (var i = 0; i < n; i++) {
+    values.push(Math.pow(2, i));
+  }
+  var checkPrevious = function(array, val, idx = array.length - 1) {
+    var count = array.length - idx;
+    if (idx === -1) {
+      return true;
+    } else if (Math.pow(2, count) * val === array[idx] || val === array[idx] * Math.pow(2, count)) {
+      return false;
+    } else {
+      return checkPrevious(array, val, idx - 1);
+    }
+    
+    
+  };
+  var findPerms = function (spacesLeft, attempt = []) {
+
+    if (spacesLeft === 0) {
+      if (attempt.length === n) {
+        solutionCount++;
+      }
+      return;
+    }
+
+    for (var i = 0; i < n; i++) {
+      var current = values[i];
+      if (checkPrevious(attempt, current) && attempt.indexOf(current) === -1) {
+        findPerms(spacesLeft - 1, attempt.concat(current));
+      } else {
+        findPerms(spacesLeft - 1, attempt.slice(0));
+      }
+    }
+  };
+
+  if (n === 0 || n === 1) {
+    return 1;
+  } else if (n === 2 || n === 3) {
+    return 0;
+  } else {
+    findPerms(n);
+  }
+
+  console.timeEnd('Count ' + n + ' queens');
+  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
+  return solutionCount;
+};
+  /*var board = new Board({n: n});
   
   
 
@@ -171,5 +220,69 @@ window.countNQueensSolutions = function(n) {
   }
 
   // console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-  return solutionCount;
-};
+  
+  */
+  // return solutionCount;
+
+
+
+/*
+Experimenting with Bitwise
+
+
+//  generate values
+var values = [];
+for (var i = 0; i < n; i++) {
+  values.push(Math.pow(2, i));
+}
+
+//  generate permutations
+
+// rule:  cannot put values that are 2* value or 1/2 value next to each other
+(we could potentially just use values 0 - n to represent each potential column/row)
+var matrix = [];
+var solution = [];
+if (value2 !== 2 * value1 && value2 * 2 !== value1) {
+  solution.push(value2);
+  
+}
+
+if (solution.length === n) {
+  matrix.push(solution);
+}
+
+
+
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
